@@ -85,8 +85,8 @@ export default function HomePage() {
             My Bookshelf
           </h1>
           <p className="mt-2 max-w-md font-body text-sm text-ash">
-            Current reads, standing recommendations, and everything already
-            finished — browse by type, then narrow by genre.
+            Digital bookshelf until I build my own physical one! 
+            Browse by type, then narrow by genre. 
           </p>
         </div>
         <Link
