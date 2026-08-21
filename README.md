@@ -1,6 +1,6 @@
 ### ***used co-pilot***
   
-I needed a better way to arrange my books, movies-series, recipes, etc. digitally. 
+I needed a better way to arrange my books, movies-series, etc. digitally. 
 
 So I made this, one afternoon after work hrs; was it worth it? maybe for now
 
