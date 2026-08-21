@@ -47,7 +47,7 @@ export default function HomePage() {
 
   // Fixed set of 5 types shown as tabs regardless of how many books exist
   // yet — the categories are the taxonomy, not derived from data.
-  const typesPresent = TYPES;
+  const typesPresent = [...TYPES];
 
   const genresForType = useMemo(() => {
     if (!books || !activeType) return [];

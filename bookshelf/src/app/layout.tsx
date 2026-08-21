@@ -23,7 +23,7 @@ const mono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: "My Bookshelf",
-  description: "A shelf of current reads and recommendations.",
+  description: "Digital bookshelf until I build my own!",
 };
 
 export default function RootLayout({
