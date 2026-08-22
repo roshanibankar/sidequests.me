@@ -85,7 +85,7 @@ export default function HomePage() {
             My Bookshelf
           </h1>
           <p className="mt-2 max-w-md font-body text-sm text-ash">
-            Digital bookshelf until I build my own physical one! 
+            Digital bookshelf until I build my own physical one. Cause the stories we love best do live in us forever!
             Browse by type, then narrow by genre. 
           </p>
         </div>

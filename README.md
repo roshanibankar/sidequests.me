@@ -1,4 +1,4 @@
-### ***used co-pilot***
+### ***used co-pilot for this project***
   
 I needed a better way to arrange my books, movies-series, etc. digitally. 
 

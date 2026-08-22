@@ -7,17 +7,18 @@ import { Book, TYPES, Status } from "@/lib/types";
 const GENRE_SUGGESTIONS = [
   "Sci-Fi",
   "Romance",
-  "Drama",
+  "Drama/Literary",
   "Fantasy",
   "Comedy",
   "Crime/Mystery/Thriller",
   "Horror",
   "Science",
   "Architecture",
-  "Self Help/Literary",
+  "Self Help",
   "War/Tragedy",
   "Action/Adventure",
   "Poetry",
+  "Art",
 ];
 
 function AddForm() {
