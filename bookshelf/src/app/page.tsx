@@ -31,7 +31,14 @@ export default function HomePage() {
       .catch(() => {});
   }, []);
 
-  
+  async function handleLogout() {
+    try {
+      await fetch("/api/logout", { method: "POST" });
+      setLoggedIn(false);
+    } catch (error) {
+      console.error("Failed to log out", error);
+    }
+  }
 
   // Reset genre selection whenever the type changes.
   function changeType(type: string | null) {
@@ -121,7 +128,12 @@ export default function HomePage() {
               >
                 + Add a book
               </Link>
-              
+              <button
+                onClick={handleLogout}
+                className="shrink-0 rounded-md border border-ash/40 px-4 py-1.5 font-body text-sm text-ash transition-colors hover:bg-ash/10 hover:text-parchment"
+              >
+                Log out
+              </button>
             </>
           ) : (
             <Link
