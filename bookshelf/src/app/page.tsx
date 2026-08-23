@@ -16,6 +16,7 @@ export default function HomePage() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [activeType, setActiveType] = useState<string | null>(null);
   const [selectedGenres, setSelectedGenres] = useState<Set<string>>(new Set());
+  const [searchQuery, setSearchQuery] = useState("");
   const [openBook, setOpenBook] = useState<Book | null>(null);
   const [view, setView] = useState<View>("wall");
 
@@ -29,6 +30,12 @@ export default function HomePage() {
       .then((d) => setLoggedIn(!!d.loggedIn))
       .catch(() => {});
   }, []);
+
+  async function handleLogout() {
+    await fetch("/api/logout", { method: "POST" });
+    setLoggedIn(false);
+    window.location.reload();
+  }
 
   // Reset genre selection whenever the type changes.
   function changeType(type: string | null) {
@@ -59,12 +66,22 @@ export default function HomePage() {
 
   const filtered = useMemo(() => {
     if (!books) return [];
+    const query = searchQuery.toLowerCase().trim();
+
     return books.filter((b) => {
       if (activeType && b.type !== activeType) return false;
       if (selectedGenres.size > 0 && !selectedGenres.has(b.genre)) return false;
+
+      if (query) {
+        const matchesTitle = b.title.toLowerCase().includes(query);
+        const matchesAuthor = b.author?.toLowerCase().includes(query) ?? false;
+        const matchesGenre = b.genre.toLowerCase().includes(query);
+        if (!matchesTitle && !matchesAuthor && !matchesGenre) return false;
+      }
+
       return true;
     });
-  }, [books, activeType, selectedGenres]);
+  }, [books, activeType, selectedGenres, searchQuery]);
 
   const reading = filtered.filter((b) => b.status === "READING");
   const recommended = filtered.filter((b) => b.status === "RECOMMENDED");
@@ -89,12 +106,41 @@ export default function HomePage() {
             Browse by type, then narrow by genre. 
           </p>
         </div>
-        <Link
-          href={loggedIn ? "/add" : "/login"}
-          className="shrink-0 rounded-md border border-brass/60 px-4 py-2 font-body text-sm text-brass transition-colors hover:bg-brass/10"
-        >
-          {loggedIn ? "+ Add a book" : "Log in"}
-        </Link>
+
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Search Box */}
+          <input
+            type="text"
+            placeholder="Search title, author..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="rounded-md border border-white/10 bg-surface px-3 py-1.5 font-body text-xs text-parchment outline-none focus:border-brass placeholder:text-ash"
+          />
+
+          {loggedIn ? (
+            <>
+              <Link
+                href="/add"
+                className="shrink-0 rounded-md border border-brass/60 px-4 py-1.5 font-body text-sm text-brass transition-colors hover:bg-brass/10"
+              >
+                + Add a book
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="font-mono text-xs text-ash transition-colors hover:text-rose-400"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link
+              href="/login"
+              className="shrink-0 rounded-md border border-brass/60 px-4 py-1.5 font-body text-sm text-brass transition-colors hover:bg-brass/10"
+            >
+              Log in
+            </Link>
+          )}
+        </div>
       </header>
 
       <div className="mb-8 space-y-4">
