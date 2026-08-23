@@ -31,11 +31,7 @@ export default function HomePage() {
       .catch(() => {});
   }, []);
 
-  async function handleLogout() {
-    await fetch("/api/logout", { method: "POST" });
-    setLoggedIn(false);
-    window.location.reload();
-  }
+  
 
   // Reset genre selection whenever the type changes.
   function changeType(type: string | null) {
@@ -125,12 +121,7 @@ export default function HomePage() {
               >
                 + Add a book
               </Link>
-              <button
-                onClick={handleLogout}
-                className="font-mono text-xs text-ash transition-colors hover:text-rose-400"
-              >
-                Logout
-              </button>
+              
             </>
           ) : (
             <Link
