@@ -88,14 +88,23 @@ export default function HomePage() {
 
   const reading = filtered.filter((b) => b.status === "READING");
   const recommended = filtered.filter((b) => b.status === "RECOMMENDED");
-  const read = filtered
+  
+  // Finished books sorted by rating for the wall view
+  const readForWall = filtered
     .filter((b) => b.status === "READ")
     .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
 
-  // Wall view shows everything together: reading first, then
-  // recommended, then finished (highest-rated first) — same priority
-  // as the three separate shelves, just not split into sections.
-  const wallOrder = [...reading, ...recommended, ...read];
+  // Finished books sorted by actual recently finished order (e.g. updatedAt or finishedAt descending)
+  const readForShelves = filtered
+    .filter((b) => b.status === "READ")
+    .sort((a, b) => {
+      const dateA = new Date(a.updatedAt || a.createdAt || 0).getTime();
+      const dateB = new Date(b.updatedAt || b.createdAt || 0).getTime();
+      return dateB - dateA;
+    });
+
+  // Wall view shows everything together: reading first, then recommended, then finished (highest-rated first)
+  const wallOrder = [...reading, ...recommended, ...readForWall];
 
   return (
     <main className="mx-auto min-h-screen max-w-6xl px-5 pb-24 pt-10 sm:px-8">
@@ -191,9 +200,9 @@ export default function HomePage() {
             onSelect={setOpenBook}
           />
           <Shelf
-            label="Finished"
-            count={read.length}
-            books={read}
+            label="Recently finished"
+            count={readForShelves.length}
+            books={readForShelves}
             onSelect={setOpenBook}
           />
         </>
