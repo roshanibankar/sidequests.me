@@ -94,12 +94,12 @@ export default function HomePage() {
     .filter((b) => b.status === "READ")
     .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
 
-  // Finished books sorted by actual recently finished order (e.g. updatedAt or finishedAt descending)
+  // Finished books sorted strictly by recently added order (createdAt descending)
   const readForShelves = filtered
     .filter((b) => b.status === "READ")
     .sort((a, b) => {
-      const dateA = new Date(a.updatedAt || a.createdAt || 0).getTime();
-      const dateB = new Date(b.updatedAt || b.createdAt || 0).getTime();
+      const dateA = new Date(a.createdAt || 0).getTime();
+      const dateB = new Date(b.createdAt || 0).getTime();
       return dateB - dateA;
     });
 
