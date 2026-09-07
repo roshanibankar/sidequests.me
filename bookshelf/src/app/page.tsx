@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Book, TYPES } from "@/lib/types";
 import TypeTabs from "@/components/TypeTabs";
 import GenreFilter from "@/components/GenreFilter";
@@ -40,7 +41,6 @@ export default function HomePage() {
     }
   }
 
-  // Reset genre selection whenever the type changes.
   function changeType(type: string | null) {
     setActiveType(type);
     setSelectedGenres(new Set());
@@ -55,8 +55,6 @@ export default function HomePage() {
     });
   }
 
-  // Fixed set of 5 types shown as tabs regardless of how many books exist
-  // yet — the categories are the taxonomy, not derived from data.
   const typesPresent = [...TYPES];
 
   const genresForType = useMemo(() => {
@@ -88,13 +86,11 @@ export default function HomePage() {
 
   const reading = filtered.filter((b) => b.status === "READING");
   const recommended = filtered.filter((b) => b.status === "RECOMMENDED");
-  
-  // Finished books sorted by rating for the wall view
+
   const readForWall = filtered
     .filter((b) => b.status === "READ")
     .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
 
-  // Finished books sorted strictly by recently added order (createdAt descending)
   const readForShelves = filtered
     .filter((b) => b.status === "READ")
     .sort((a, b) => {
@@ -103,24 +99,35 @@ export default function HomePage() {
       return dateB - dateA;
     });
 
-  // Wall view shows everything together: reading first, then recommended, then finished (highest-rated first)
   const wallOrder = [...reading, ...recommended, ...readForWall];
 
   return (
     <main className="mx-auto min-h-screen max-w-6xl px-5 pb-24 pt-10 sm:px-8">
       <header className="mb-10 flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1 className="font-display text-4xl italic text-parchment sm:text-5xl">
-            My Bookshelf
-          </h1>
-          <p className="mt-2 max-w-md font-body text-sm text-ash">
-            Digital bookshelf until I build my own physical one. Cause the stories we love best do live in us forever!
-            Browse by type, then narrow by genre. View on Desktop for better experience.
-          </p>
+        {/* Logo side-by-side with text */}
+        <div className="flex items-center gap-4 sm:gap-6">
+          <Image
+            src="/logo.svg"
+            alt="My Bookshelf Logo"
+            width={128}
+            height={128}
+            className="h-24 w-24 shrink-0 rounded-full object-cover sm:h-32 sm:w-32"
+            priority
+          />
+
+          <div>
+            <h1 className="font-display text-4xl italic text-parchment sm:text-5xl">
+              My Bookshelf
+            </h1>
+            <p className="mt-2 max-w-md font-body text-sm text-ash">
+              Digital bookshelf until I build my own physical one. Cause the
+              stories we love best do live in us forever! Browse by type, then
+              narrow by genre. View on Desktop for better experience.
+            </p>
+          </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          {/* Search Box */}
           <input
             type="text"
             placeholder="Search title, author..."

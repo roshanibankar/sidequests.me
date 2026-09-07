@@ -21,9 +21,14 @@ const mono = IBM_Plex_Mono({
   weight: ["400", "500"],
 });
 
+
+
 export const metadata: Metadata = {
   title: "My Bookshelf",
   description: "Digital bookshelf until I build my own!",
+  icons: {
+    icon: "/logo.svg",
+  },
 };
 
 export default function RootLayout({
