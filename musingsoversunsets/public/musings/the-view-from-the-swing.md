@@ -1,9 +1,9 @@
 ---
-title: The View from the Swing
+title: The View From The Swing
 date: 2026-04-25
 type: poem
 ---
-![TEDx Sunset](/sidequests/musingsoversunsets/sunsets/sunset1.jpg)
+![The View From The Swing](/sunsets/sunset2.jpg)
 
 I saw two people on a swing tonight,  
 Moving gently in the dark, under the light.  

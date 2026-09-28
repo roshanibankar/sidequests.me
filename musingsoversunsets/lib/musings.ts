@@ -11,24 +11,20 @@ export type Musing = {
 };
 
 /**
- * Robustly extracts the image filename and maps it to /sunsets/<filename>
- * Handles any prefix like /sidequests.me/musingsoversunsets/ or relative paths.
+ * Parses any path string and extracts the final image filename,
+ * routing it directly to /sunsets/<filename>
  */
 export function normalizeImagePath(rawPath: string | null): string | null {
   if (!rawPath) return null;
 
   const clean = rawPath.trim().replace(/^["']|["']$/g, "");
 
-  // Match any file extension inside or after a 'sunsets/' directory
-  const sunsetMatch = clean.match(/sunsets\/([^\s\)\'\"]+)/i);
-  if (sunsetMatch) {
-    return `/sunsets/${sunsetMatch[1]}`;
-  }
+  // Match the filename after "sunsets/" or grab any image filename
+  const filenameMatch = clean.match(/sunsets\/([^\s\)\'\"]+)/i) || 
+                        clean.match(/([^\/\s\)\'\"]+\.(?:jpg|jpeg|png|webp|avif|gif|svg))/i);
 
-  // Fallback: match any standalone filename with an image extension
-  const fileMatch = clean.match(/([^\/\s\)\'\"]+\.(?:jpg|jpeg|png|webp|avif|gif|svg))/i);
-  if (fileMatch) {
-    return `/sunsets/${fileMatch[1]}`;
+  if (filenameMatch) {
+    return `/sunsets/${filenameMatch[1]}`;
   }
 
   return null;
@@ -49,12 +45,10 @@ export function getAllMusings(): Musing[] {
       const fullPath = path.join(directory, filename);
       let rawContent = fs.readFileSync(fullPath, "utf8");
 
-      // Strip UTF-8 BOM byte if present
       if (rawContent.charCodeAt(0) === 0xfeff) {
         rawContent = rawContent.slice(1);
       }
 
-      // Normalize line endings to \n
       const normalized = rawContent.replace(/\r\n/g, "\n");
 
       let title = "";
@@ -62,7 +56,7 @@ export function getAllMusings(): Musing[] {
       let sunsetPhoto = "";
       let body = normalized;
 
-      // Extract Frontmatter cleanly
+      // Extract Frontmatter
       const fmMatch = normalized.match(/^---\s*\n([\s\S]*?)\n---\s*\n?/);
       if (fmMatch) {
         body = normalized.slice(fmMatch[0].length).trim();
@@ -79,17 +73,19 @@ export function getAllMusings(): Musing[] {
         }
       }
 
-      // Extract first Markdown image: ![alt](url)
-      const imgMatch = body.match(/!\[.*?\]\((.*?)\)/);
+      // Extract image URL directly from markdown content: ![alt](url)
+      const imgRegex = /!\[.*?\]\((.*?)\)/g;
+      const imgMatch = imgRegex.exec(body);
       const rawExtractedPhoto = imgMatch ? imgMatch[1] : sunsetPhoto;
+      
       const photo = normalizeImagePath(rawExtractedPhoto);
 
-      // Clean body text for card previews
+      // Clean body text for preview cards
       const cleanText = body
-        .replace(/!\[.*?\]\(.*?\)/g, "") // remove images
-        .replace(/^#+\s+/gm, "")         // remove headers
-        .replace(/[*_`~]/g, "")           // remove formatting symbols
-        .replace(/\[(.*?)\]\(.*?\)/g, "$1") // convert links to text
+        .replace(/!\[.*?\]\(.*?\)/g, "")
+        .replace(/^#+\s+/gm, "")
+        .replace(/[*_`~]/g, "")
+        .replace(/\[(.*?)\]\(.*?\)/g, "$1")
         .trim();
 
       const formattedTitle = slug

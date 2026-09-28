@@ -3,7 +3,7 @@ title: TEDx
 date: 2024-09-25
 type: poem
 ---
-![TEDx Sunset](/sidequests.me/musingsoversunsets/sunsets/sunset1.jpg)
+![TEDx](/sunsets/sunset1.jpg)
 
 We don’t wait for someone to tell us what to do,  
 Cause we’re the pirates & pioneers of something new!  

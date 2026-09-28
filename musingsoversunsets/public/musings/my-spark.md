@@ -3,7 +3,7 @@ title: My Spark
 date: 2026-04-05
 type: poem
 ---
-![TEDx Sunset](/sidequests/musingsoversunsets/sunsets/sunset1.jpg)
+![My Spark](/sunsets/sunset2.jpg)
 
 I want to write, but I feel no spark,  
 Like my magic was stolen and locked in the dark.  
