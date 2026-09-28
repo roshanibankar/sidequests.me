@@ -3,6 +3,7 @@ title: Delay (A Digital Drift)
 date: 2024-08-29
 type: poem
 ---
+![TEDx Sunset](/sidequests/musingsoversunsets/sunsets/sunset1.jpg)
 
 Seconds stretch like years,  
 When the messages sent linger in digital queues,  

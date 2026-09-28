@@ -3,6 +3,7 @@ title: When I ask "why"
 date: 2023
 type: poem
 ---
+![TEDx Sunset](/sidequests/musingsoversunsets/sunsets/sunset1.jpg)
 
 When I ask "why",  
 Tempers may rise & some may sign.  

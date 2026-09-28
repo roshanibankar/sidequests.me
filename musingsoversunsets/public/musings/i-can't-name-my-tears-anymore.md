@@ -3,6 +3,7 @@ title: I Can't Name My Tears Anymore
 date: 2026-04-05
 type: poem
 ---
+![TEDx Sunset](/sidequests/musingsoversunsets/sunsets/sunset1.jpg)
 
 I sit with the weight I cannot name,  
 A quiet river behind my eyes,  

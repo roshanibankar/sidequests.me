@@ -3,6 +3,7 @@ title: Maybe I Found Him
 date: 2023-02-28
 type: poem
 ---
+![TEDx Sunset](/sidequests/musingsoversunsets/sunsets/sunset1.jpg)
 
 Words like embers, comfort and inspire,  
 But actions fans the flames, set hearts on fire.  

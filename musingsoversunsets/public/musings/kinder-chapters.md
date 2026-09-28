@@ -3,6 +3,7 @@ title: Kinder Chapters
 date: 2026-06-24
 type: poem
 ---
+![TEDx Sunset](/sidequests/musingsoversunsets/sunsets/sunset1.jpg)
 
 They called me a storm that the roof couldn’t bear.  
 No one reached for me,  

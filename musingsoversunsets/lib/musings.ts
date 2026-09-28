@@ -5,17 +5,34 @@ export type Musing = {
   slug: string;
   title: string;
   date: string;
-  location?: string;
-  sunsetPhoto: string;
+  photo: string | null;
   excerpt: string;
   content: string;
 };
 
-const DEFAULT_PHOTOS = [
-  "/sunsets/sunset1.jpg",
-  "/sunsets/sunset2.jpg",
-  "/sunsets/sunset3.jpg",
-];
+/**
+ * Robustly extracts the image filename and maps it to /sunsets/<filename>
+ * Handles any prefix like /sidequests.me/musingsoversunsets/ or relative paths.
+ */
+export function normalizeImagePath(rawPath: string | null): string | null {
+  if (!rawPath) return null;
+
+  const clean = rawPath.trim().replace(/^["']|["']$/g, "");
+
+  // Match any file extension inside or after a 'sunsets/' directory
+  const sunsetMatch = clean.match(/sunsets\/([^\s\)\'\"]+)/i);
+  if (sunsetMatch) {
+    return `/sunsets/${sunsetMatch[1]}`;
+  }
+
+  // Fallback: match any standalone filename with an image extension
+  const fileMatch = clean.match(/([^\/\s\)\'\"]+\.(?:jpg|jpeg|png|webp|avif|gif|svg))/i);
+  if (fileMatch) {
+    return `/sunsets/${fileMatch[1]}`;
+  }
+
+  return null;
+}
 
 export function getAllMusings(): Musing[] {
   const directory = path.join(process.cwd(), "public", "musings");
@@ -27,36 +44,52 @@ export function getAllMusings(): Musing[] {
     .filter((file) => file.endsWith(".md"));
 
   return files
-    .map((filename, index) => {
+    .map((filename) => {
       const slug = filename.replace(/\.md$/, "");
-      const rawContent = fs.readFileSync(path.join(directory, filename), "utf8");
+      const fullPath = path.join(directory, filename);
+      let rawContent = fs.readFileSync(fullPath, "utf8");
 
-      // Normalize line endings (\r\n -> \n)
-      const normalized = rawContent.replace(/\r\n/g, "\n").trim();
-
-      const frontmatterMatch = normalized.match(/^---\n([\s\S]*?)\n---\n?/);
-      const metadata: Record<string, string> = {};
-
-      if (frontmatterMatch) {
-        frontmatterMatch[1].split("\n").forEach((line) => {
-          const colonIndex = line.indexOf(":");
-          if (colonIndex !== -1) {
-            const key = line.slice(0, colonIndex).trim();
-            const value = line
-              .slice(colonIndex + 1)
-              .trim()
-              .replace(/^["']|["']$/g, "");
-            metadata[key] = value;
-          }
-        });
+      // Strip UTF-8 BOM byte if present
+      if (rawContent.charCodeAt(0) === 0xfeff) {
+        rawContent = rawContent.slice(1);
       }
 
-      const body = normalized.replace(frontmatterMatch?.[0] ?? "", "").trim();
+      // Normalize line endings to \n
+      const normalized = rawContent.replace(/\r\n/g, "\n");
 
+      let title = "";
+      let date = "";
+      let sunsetPhoto = "";
+      let body = normalized;
+
+      // Extract Frontmatter cleanly
+      const fmMatch = normalized.match(/^---\s*\n([\s\S]*?)\n---\s*\n?/);
+      if (fmMatch) {
+        body = normalized.slice(fmMatch[0].length).trim();
+        const fmLines = fmMatch[1].split("\n");
+        for (const line of fmLines) {
+          const colonIdx = line.indexOf(":");
+          if (colonIdx !== -1) {
+            const key = line.slice(0, colonIdx).trim().toLowerCase();
+            const val = line.slice(colonIdx + 1).trim().replace(/^["']|["']$/g, "");
+            if (key === "title") title = val;
+            if (key === "date") date = val;
+            if (key === "sunsetphoto" || key === "photo") sunsetPhoto = val;
+          }
+        }
+      }
+
+      // Extract first Markdown image: ![alt](url)
+      const imgMatch = body.match(/!\[.*?\]\((.*?)\)/);
+      const rawExtractedPhoto = imgMatch ? imgMatch[1] : sunsetPhoto;
+      const photo = normalizeImagePath(rawExtractedPhoto);
+
+      // Clean body text for card previews
       const cleanText = body
-        .replace(/#+\s/g, "")
-        .replace(/[*_`~]/g, "")
-        .replace(/\[(.*?)\]\(.*?\)/g, "$1")
+        .replace(/!\[.*?\]\(.*?\)/g, "") // remove images
+        .replace(/^#+\s+/gm, "")         // remove headers
+        .replace(/[*_`~]/g, "")           // remove formatting symbols
+        .replace(/\[(.*?)\]\(.*?\)/g, "$1") // convert links to text
         .trim();
 
       const formattedTitle = slug
@@ -66,15 +99,10 @@ export function getAllMusings(): Musing[] {
 
       return {
         slug,
-        title: metadata.title || formattedTitle,
-        date: metadata.date || "Undated",
-        location: metadata.location,
-        sunsetPhoto:
-          metadata.sunsetPhoto || DEFAULT_PHOTOS[index % DEFAULT_PHOTOS.length],
-        excerpt:
-          cleanText.length > 180
-            ? cleanText.slice(0, 180) + "..."
-            : cleanText,
+        title: title || formattedTitle,
+        date: date || "Undated",
+        photo,
+        excerpt: cleanText.length > 120 ? cleanText.slice(0, 120) + "..." : cleanText,
         content: body,
       };
     })

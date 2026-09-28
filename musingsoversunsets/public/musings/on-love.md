@@ -3,6 +3,9 @@ title: On Love
 date: 2026-09-11
 type: Article
 ---
+
+![TEDx Sunset](/sidequests/musingsoversunsets/sunsets/sunset1.jpg)
+
 Oh how we all procrastinate at some point in our lives and try to convince ourselves that one day we'll find one perfect motive to start.
 
 ## 1. Love is a Choice on a Random Tuesday

@@ -3,6 +3,7 @@ title: Conversation with Sloth
 date: 2024-12-9
 type: poem
 ---
+![TEDx Sunset](/sidequests/musingsoversunsets/sunsets/sunset1.jpg)
 
 **Z:**  
 If what I say could speak 1000 ways,  

@@ -3,6 +3,8 @@ title: Crowded Rooms
 date: 2023
 type: poem
 ---
+![TEDx Sunset](/sidequests/musingsoversunsets/sunsets/sunset1.jpg)
+
 
 In the crowded rooms of our fame will we ever mention each others name?
 Will we exchange a smile or be separated by a mile?

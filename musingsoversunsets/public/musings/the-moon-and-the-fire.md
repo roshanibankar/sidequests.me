@@ -3,6 +3,7 @@ title: The Moon & The Fire
 date: 2023-03-22
 type: poem
 ---
+![TEDx Sunset](/sidequests/musingsoversunsets/sunsets/sunset1.jpg)
 
 
 In the dance of night, where shadows loom,  
