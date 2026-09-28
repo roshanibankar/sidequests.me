@@ -3,7 +3,7 @@ title: Delay (A Digital Drift)
 date: 2024-08-29
 type: poem
 ---
-![Delay](/sunsets/sunset1.jpg)
+![Delay](/sunsets/sunset5.jpg)
 
 Seconds stretch like years,  
 When the messages sent linger in digital queues,  

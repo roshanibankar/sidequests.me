@@ -3,7 +3,7 @@ title: Conversation with Sloth
 date: 2024-12-9
 type: poem
 ---
-![Conversation with Sloth](/sunsets/sunset2.jpg)
+![Conversation with Sloth](/sunsets/sunset7.jpg)
 **Z:**  
 If what I say could speak 1000 ways,  
 Which of them would you choose to walk?  

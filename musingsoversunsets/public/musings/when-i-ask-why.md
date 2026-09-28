@@ -1,9 +1,9 @@
 ---
-title: When I ask "Why"
+title: When I ask- Why
 date: 2023
 type: poem
 ---
-![When I ask "Why"](/sunsets/sunset3.jpg)
+![When I ask "Why"](/sunsets/sunset1.jpg)
 
 When I ask "why",  
 Tempers may rise & some may sign.  

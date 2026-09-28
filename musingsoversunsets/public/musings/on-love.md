@@ -4,7 +4,7 @@ date: 2026-09-11
 type: Article
 ---
 
-![On Love](/sunsets/sunset3.jpg)
+![On Love](/sunsets/sunset12.jpg)
 
 Oh how we all procrastinate at some point in our lives and try to convince ourselves that one day we'll find one perfect motive to start.
 

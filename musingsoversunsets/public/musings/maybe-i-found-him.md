@@ -3,7 +3,7 @@ title: Maybe I Found Him
 date: 2023-02-28
 type: poem
 ---
-![Maybe I Found Him](/sunsets/sunset1.jpg)
+![Maybe I Found Him](/sunsets/sunset3.jpg)
 
 Words like embers, comfort and inspire,  
 But actions fans the flames, set hearts on fire.  

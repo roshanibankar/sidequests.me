@@ -6,6 +6,13 @@
   --polaroid-paper: #fefcf9;
 }
 
+@layer base {
+  ::selection {
+    background-color: #e5b376; /* Warm amber-gold highlight */
+    color: #2c221a;            /* Dark sepia text color */
+  }
+}
+
 body {
   background-color: var(--bg-cork);
   color: #f5f5f4;
