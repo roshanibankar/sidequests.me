@@ -1,5 +1,5 @@
 ---
-title: Just Start
+title: On Love
 date: 2026-09-11
 type: Article
 ---
