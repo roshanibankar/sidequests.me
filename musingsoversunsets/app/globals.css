@@ -8,8 +8,8 @@
 
 @layer base {
   ::selection {
-    background-color: #e5b376; /* Warm amber-gold highlight */
-    color: #2c221a;            /* Dark sepia text color */
+    background-color: #e5b376;
+    color: #2c221a;         
   }
 }
 
@@ -28,4 +28,19 @@ body {
 
 .font-handwritten {
   font-family: 'Caveat', cursive;
+}
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+::selection {
+  background-color: #9ec337;
+  color: #ffffff;
+}
+
+::-moz-selection {
+  background-color: #9ec337;
+  color: #ffffff;
 }

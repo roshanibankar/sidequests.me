@@ -3,7 +3,7 @@ title: I Can't Name My Tears Anymore
 date: 2026-04-05
 type: poem
 ---
-![I Can't Name My Tears Anymore](/sunsets/sunset9.jpg)
+![I Can't Name My Tears Anymore](/sunsets/sunset8.jpg)
 
 I sit with the weight I cannot name,  
 A quiet river behind my eyes,  

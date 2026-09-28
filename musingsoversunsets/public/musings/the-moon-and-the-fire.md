@@ -3,7 +3,7 @@ title: The Moon & The Fire
 date: 2023-03-22
 type: poem
 ---
-![The Moon & The Fire](/sunsets/sunset4.jpg)
+![The Moon & The Fire](/sunsets/sunset3.jpg)
 
 
 In the dance of night, where shadows loom,  

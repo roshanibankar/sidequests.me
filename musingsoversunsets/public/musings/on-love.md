@@ -1,12 +1,14 @@
 ---
 title: On Love
-date: 2026-09-11
+date: 2026-07-08
 type: Article
 ---
 
-![On Love](/sunsets/sunset12.jpg)
 
-Oh how we all procrastinate at some point in our lives and try to convince ourselves that one day we'll find one perfect motive to start.
+![On Love](/sunsets/sunset11.jpg)
+
+As I approach 23, I find myself looking at love and relationships through a clearer, more grounded lens. Here are 23 ideas on love that I’m ready to take a stand for.
+
 
 ## 1. Love is a Choice on a Random Tuesday
 

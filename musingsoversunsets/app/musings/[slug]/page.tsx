@@ -89,7 +89,7 @@ export default async function EntryPage({ params }: PageProps) {
   if (!entry) notFound();
 
   return (
-    <main className="min-h-screen w-full py-12 px-4 md:px-12 bg-[#f4ebd0] text-[#3d3127] relative selection:bg-[#d97706]/20">
+    <main className="min-h-screen w-full py-12 px-4 md:px-12 bg-[#f4ebd0] text-[#3d3127] relative">
       {/* Aged Parchment Vignette & Texture Overlay */}
       <div className="absolute inset-0 pointer-events-none z-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(70,53,38,0.12)_100%)]" />
 

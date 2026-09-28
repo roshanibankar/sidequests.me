@@ -3,7 +3,7 @@ title: Kinder Chapters
 date: 2026-06-24
 type: poem
 ---
-![Kinder Chapters](/sunsets/sunset11.jpg)
+![Kinder Chapters](/sunsets/sunset10.jpg)
 
 They called me a storm that the roof couldn’t bear.  
 No one reached for me,  

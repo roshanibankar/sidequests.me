@@ -43,7 +43,7 @@ export default function Home() {
             musings over sunsets
           </h1>
           <p className="font-handwritten text-2xl text-[#856348] drop-shadow-sm">
-            A special collection of reflections during golden hours captured in polaroids and words.
+            A collection of reflections during golden hours captured in polaroids and words.
           </p>
         </header>
 
