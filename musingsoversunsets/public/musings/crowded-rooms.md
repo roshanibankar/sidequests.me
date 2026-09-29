@@ -3,7 +3,7 @@ title: Crowded Rooms
 date: 2023
 type: poem
 ---
-![Crowded Rooms](/sunsets/sunset2.jpg)
+![Crowded Rooms](/sunsets/sunset4.jpg)
 
 In the crowded rooms of our fame will we ever mention each others name?
 Will we exchange a smile or be separated by a mile?
