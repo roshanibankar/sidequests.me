@@ -6,7 +6,7 @@ import matter from "gray-matter";
 
 export const dynamic = "force-dynamic";
 
-export async function DELETE(request: Request) {
+export async function GET(request: Request) {
   const cookieStore = await cookies();
   const session = cookieStore.get("admin_session");
 
@@ -23,29 +23,19 @@ export async function DELETE(request: Request) {
 
   try {
     const filePath = path.join(process.cwd(), "public/musings", `${slug}.md`);
-    
     if (fs.existsSync(filePath)) {
       const fileContent = fs.readFileSync(filePath, "utf8");
-      const { data } = matter(fileContent);
-
-      // Cleanly delete associated image if it exists
-      if (data.photo && typeof data.photo === "string") {
-        // e.g., converts "/sunsets/foo.jpg" -> "sunsets/foo.jpg"
-        const cleanPhotoPath = data.photo.startsWith("/") ? data.photo.slice(1) : data.photo;
-        const imageFullPath = path.join(process.cwd(), "public", cleanPhotoPath);
-        
-        if (fs.existsSync(imageFullPath)) {
-          fs.unlinkSync(imageFullPath);
-        }
-      }
-
-      fs.unlinkSync(filePath);
-      return NextResponse.json({ success: true });
+      const { data, content } = matter(fileContent);
+      return NextResponse.json({
+        title: data.title || "",
+        date: data.date || "",
+        content: content || "",
+        photo: data.photo || "",
+      });
     }
-
     return NextResponse.json({ error: "File not found" }, { status: 404 });
   } catch (error) {
-    console.error("Delete error:", error);
+    console.error("Get error:", error);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
