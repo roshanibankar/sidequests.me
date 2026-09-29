@@ -8,7 +8,7 @@ type: poem
 I saw two people on a swing tonight,  
 Moving gently in the dark, under the light.  
 Once I would have smiled and thought it's sweet,  
-Wishing I had someone's hand to meet.
+Wishing I had someone's hands to meet.
 
 But now my mind goes to darker places,  
 As I look close and try to read their faces.  
