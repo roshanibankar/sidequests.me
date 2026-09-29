@@ -35,4 +35,3 @@ We’re closer than their long goodbyes.
 
 **By Rosh**  
 
-**Rating: 8.5/10**

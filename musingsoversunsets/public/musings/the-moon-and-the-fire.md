@@ -31,5 +31,4 @@ Like an unexpected encounter here to stay.
 
 **By Rosh** 
 
-**Rating: 4.5/10**
 

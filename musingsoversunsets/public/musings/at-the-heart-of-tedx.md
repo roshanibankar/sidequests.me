@@ -5,33 +5,36 @@ type: poem
 ---
 ![TEDx](/sunsets/sunset5.jpg)
 
-We don’t wait for someone to tell us what to do,  
-Cause we’re the pirates & pioneers of something new!  
 
-From the ships of ideas worth sharing, we hail,  
-And the seas of Technology, Entertainment & Design we sail.  
+I gave my all in silence
+To build the Stage and Theme
+We sat in the mud when the plans went wrong,
+The music vibe checks, the shared fatigue,
+The wild adrenaline of the league
+That joy was real, that high was true,
+A crazy, beautiful, laughing crew.
 
-Through every meeting, every plan, every call,  
-TEDx becomes a piece of us all.  
+And yet, when the heavy curtains closed,
+I stood in the dark where the shadow rose.
+The World took up the Clapping Hands
+And left me with the Dream.
 
-We sit in the mud together when things go wrong,  
-Hack our way out, to comeback strong.  
+It broke a quiet Place in me
+To offer up the Whole
+And watch them turn the Credit over
+Without a single Soul.
 
-We build together, each piece, a part of a larger whole  
-Fueling the event with our collective soul.  
+And yet across the Midnights
+When all the Noise was done
+Some reached out, voices replied
+And the Strangers turned to Kin.
+They made the heavy college bear
+A soft and bittersweet Gray
+They kept the Praise and kept the Stage
+And I for a while, 
+A trusted Few
 
-A place where chill meets drive,  
-Where our unique personalities thrive.  
 
-From teasing about crushes & music vibe checks loud,  
-We’re a team, a crew, a laughing crowd.  
-
-Special connections & memories cling,  
-As TEDx is more than a club it’s everything.  
-
-In the heart of our club, creative ideas grow,  
-As we pass the torch to the adventurers among u, to let new visions flow.
+P.S. Burner poem that I didnt read at the event.
 
 **By Rosh**
-
-**Rating: 4/10**

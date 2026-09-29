@@ -30,5 +30,3 @@ Cause some things aren’t lost.
 They’re just found differently.
 
 **By Rosh**
-
-**Rating: 8.5/10**

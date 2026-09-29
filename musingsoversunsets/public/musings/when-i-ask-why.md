@@ -19,4 +19,3 @@ Will you stay with me until we frame it another way?
 
 **By Rosh**
 
-**Rating: 5/10**

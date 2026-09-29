@@ -66,4 +66,3 @@ Of landing sideways in a coin toss!
 
 **By Rosh & Mukks**  
 
-**Rating: 8/10**

@@ -37,5 +37,3 @@ As they’ll be featuring you.
 
 
 **By Rosh**
-
-**Rating:** 8/10
