@@ -5,36 +5,38 @@ type: poem
 ---
 ![TEDx](/sunsets/sunset5.jpg)
 
+I gave my blood to the stage,
+I bled my youth into the Theme.
+While they lined up for the spotlight,
+I was drowning in that Dream.
+We sat in the mud in October,
+Sweating through the soundchecks and the fear,
+High on the cheap adrenaline
+Of making something out of nothing here.
+Oh, the laughter was real, the high was true
+My crazy, beautiful, tragic crew.
 
-I gave my all in silence
-To build the Stage and Theme
-We sat in the mud when the plans went wrong,
-The music vibe checks, the shared fatigue,
-The wild adrenaline of the league
-That joy was real, that high was true,
-A crazy, beautiful, laughing crew.
+Then the heavy velvet curtains dropped,
+The crowd stood up and screamed.
+They took the bows, they took the hands,
+And left me in the dark behind the screens.
 
-And yet, when the heavy curtains closed,
-I stood in the dark where the shadow rose.
-The World took up the Clapping Hands
-And left me with the Dream.
+And it broke a quiet room in me
+To watch them carve up all the gold,
+Passing around my sacrifice
+Like a story somebody else told.
 
-It broke a quiet Place in me
-To offer up the Whole
-And watch them turn the Credit over
-Without a single Soul.
+But across the silent Midnights,
+When the echo of the noise was gone,
+A couple voices whispered back,
+And the strangers turned to kin before the dawn.
 
-And yet across the Midnights
-When all the Noise was done
-Some reached out, voices replied
-And the Strangers turned to Kin.
-They made the heavy college bear
-A soft and bittersweet Gray
-They kept the Praise and kept the Stage
-And I for a while, 
-A trusted Few
+They made the heavy, hollow halls
+A soft and bittersweet shade of gray
+They can keep the stage, they can keep the praise,
+They can have the applause anyway.
+Because I kept the truth,
+And I kept the few.
 
-
-P.S. Burner poem that I didnt read at the event.
 
 **By Rosh**
