@@ -34,7 +34,7 @@ And the strangers turned to kin before the dawn.
 They made the heavy, hollow halls
 A soft and bittersweet shade of gray
 They can keep the stage, they can keep the praise,
-They can have the applause anyway.
+They can have the applause anyways.
 Because I kept the truth,
 And I kept the few.
 
