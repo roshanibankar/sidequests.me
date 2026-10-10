@@ -38,7 +38,7 @@ export default function BookModal({
       onClick={onClose}
     >
       <div
-        className="relative flex max-h-[85vh] w-full max-w-2xl overflow-hidden rounded-lg bg-surface shadow-2xl ring-1 ring-white/10"
+        className="relative flex h-[300px] max-h-[65vh] w-full max-w-2xl overflow-hidden rounded-lg bg-surface shadow-2xl ring-1 ring-white/10"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -50,7 +50,7 @@ export default function BookModal({
         </button>
 
         <div
-          className="hidden w-48 shrink-0 sm:block"
+          className="hidden h-full w-48 shrink-0 sm:block"
           style={{
             background: book.coverUrl
               ? undefined
@@ -72,36 +72,38 @@ export default function BookModal({
           )}
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6">
-          <p className="font-mono text-[11px] uppercase tracking-widest text-brass">
-            {book.type} · {book.genre}
-          </p>
-          <h2 className="mt-1 font-display text-2xl text-parchment">{book.title}</h2>
-          {book.author && (
-            <p className="mt-1 font-body text-sm text-ash">by {book.author}</p>
-          )}
+        <div className="flex flex-1 flex-col justify-between overflow-y-auto p-6">
+          <div>
+            <p className="font-mono text-[11px] uppercase tracking-widest text-brass">
+              {book.type} · {book.genre}
+            </p>
+            <h2 className="mt-1 font-display text-2xl text-parchment">{book.title}</h2>
+            {book.author && (
+              <p className="mt-1 font-body text-sm text-ash">by {book.author}</p>
+            )}
 
-          <div className="mt-4 flex items-center gap-3">
-            <span className="rounded-full border border-white/10 px-3 py-1 font-mono text-xs text-parchment/80">
-              {STATUS_LABEL[book.status]}
-            </span>
-            {book.status === "READ" && book.rating != null && (
-              <span className="rounded-full bg-brass px-3 py-1 font-mono text-xs font-medium text-ink">
-                {book.rating.toFixed(1).replace(/\.0$/, "")} / 10
+            <div className="mt-4 flex items-center gap-3">
+              <span className="rounded-full border border-white/10 px-3 py-1 font-mono text-xs text-parchment/80">
+                {STATUS_LABEL[book.status]}
               </span>
+              {book.status === "READ" && book.rating != null && (
+                <span className="rounded-full bg-brass px-3 py-1 font-mono text-xs font-medium text-ink">
+                  {book.rating.toFixed(1).replace(/\.0$/, "")} / 10
+                </span>
+              )}
+            </div>
+
+            {book.review && (
+              <div className="mt-5">
+                <p className="mb-1 font-mono text-[11px] uppercase tracking-wide text-ash">
+                  Review
+                </p>
+                <p className="whitespace-pre-wrap font-body text-sm leading-relaxed text-parchment/90">
+                  {book.review}
+                </p>
+              </div>
             )}
           </div>
-
-          {book.review && (
-            <div className="mt-5">
-              <p className="mb-1 font-mono text-[11px] uppercase tracking-wide text-ash">
-                Review
-              </p>
-              <p className="whitespace-pre-wrap font-body text-sm leading-relaxed text-parchment/90">
-                {book.review}
-              </p>
-            </div>
-          )}
 
           {loggedIn && (
             <div className="mt-6 flex gap-3 border-t border-white/10 pt-4">
