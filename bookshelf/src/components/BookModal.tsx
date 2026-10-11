@@ -82,10 +82,15 @@ export default function BookModal({
               <p className="mt-1 font-body text-sm text-ash">by {book.author}</p>
             )}
 
-            <div className="mt-4 flex items-center gap-3">
+            <div className="mt-4 flex flex-wrap items-center gap-3">
               <span className="rounded-full border border-white/10 px-3 py-1 font-mono text-xs text-parchment/80">
                 {STATUS_LABEL[book.status]}
               </span>
+              {book.publishedYear && (
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 font-mono text-xs text-ash">
+                  {book.publishedYear}
+                </span>
+              )}
               {book.status === "READ" && book.rating != null && (
                 <span className="rounded-full bg-brass px-3 py-1 font-mono text-xs font-medium text-ink">
                   {book.rating.toFixed(1).replace(/\.0$/, "")} / 10

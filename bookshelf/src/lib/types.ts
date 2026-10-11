@@ -10,6 +10,7 @@ export type Book = {
   rating: number | null;
   coverUrl: string | null;
   review: string | null;
+  publishedYear: number | null; // <-- Add this line
   createdAt: string;
   updatedAt: string;
 };

@@ -34,6 +34,11 @@ export async function POST(req: NextRequest) {
       ? Math.max(0, Math.min(10, Number(body.rating)))
       : null;
 
+  const publishedYear =
+    body.publishedYear !== undefined && body.publishedYear !== null && body.publishedYear !== ""
+      ? parseInt(body.publishedYear, 10)
+      : null;
+
   const book = await prisma.book.create({
     data: {
       title: String(body.title).trim(),
@@ -44,6 +49,7 @@ export async function POST(req: NextRequest) {
       rating,
       coverUrl: body.coverUrl ? String(body.coverUrl) : null,
       review: body.review ? String(body.review).trim() : null,
+      publishedYear: !isNaN(publishedYear!) ? publishedYear : null,
     },
   });
 

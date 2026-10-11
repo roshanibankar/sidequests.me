@@ -28,6 +28,7 @@ function AddForm() {
 
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
+  const [publishedYear, setPublishedYear] = useState("");
   const [type, setType] = useState<string>(TYPES[0]);
   const [genre, setGenre] = useState<string>(GENRE_SUGGESTIONS[0]);
   const [customGenre, setCustomGenre] = useState("");
@@ -47,6 +48,7 @@ function AddForm() {
       .then((b: Book) => {
         setTitle(b.title);
         setAuthor(b.author || "");
+        setPublishedYear(b.publishedYear ? String(b.publishedYear) : "");
         setType(TYPES.includes(b.type as any) ? b.type : "Other");
         setGenre(GENRE_SUGGESTIONS.includes(b.genre) ? b.genre : "__custom");
         if (!GENRE_SUGGESTIONS.includes(b.genre)) setCustomGenre(b.genre);
@@ -94,6 +96,7 @@ function AddForm() {
     const payload = {
       title: title.trim(),
       author: author.trim() || null,
+      publishedYear: publishedYear ? parseInt(publishedYear, 10) : null,
       type: finalType,
       genre: finalGenre,
       status,
@@ -147,14 +150,26 @@ function AddForm() {
           />
         </Field>
 
-        <Field label="Author">
-          <input
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-            className={inputClass}
-            placeholder="Frank Herbert"
-          />
-        </Field>
+        <div className="grid grid-cols-2 gap-4">
+          <Field label="Author">
+            <input
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}
+              className={inputClass}
+              placeholder="Frank Herbert"
+            />
+          </Field>
+
+          <Field label="Published Year">
+            <input
+              type="number"
+              value={publishedYear}
+              onChange={(e) => setPublishedYear(e.target.value)}
+              className={inputClass}
+              placeholder="1965"
+            />
+          </Field>
+        </div>
 
         <div className="grid grid-cols-2 gap-4">
           <Field label="Type">

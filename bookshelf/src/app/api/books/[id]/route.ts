@@ -31,6 +31,11 @@ export async function PUT(
       ? Math.max(0, Math.min(10, Number(body.rating)))
       : null;
 
+  const publishedYear =
+    body.publishedYear !== undefined && body.publishedYear !== null && body.publishedYear !== ""
+      ? parseInt(body.publishedYear, 10)
+      : null;
+
   try {
     const book = await prisma.book.update({
       where: { id: params.id },
@@ -43,6 +48,7 @@ export async function PUT(
         rating,
         coverUrl: body.coverUrl ? String(body.coverUrl) : null,
         review: body.review ? String(body.review).trim() : null,
+        publishedYear: !isNaN(publishedYear!) ? publishedYear : null,
       },
     });
     return NextResponse.json(book);

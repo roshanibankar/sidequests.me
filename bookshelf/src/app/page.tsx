@@ -11,6 +11,7 @@ import MosaicWall from "@/components/MosaicWall";
 import BookModal from "@/components/BookModal";
 
 type View = "wall" | "shelves";
+type SortOption = "default" | "published-desc" | "published-asc";
 
 export default function HomePage() {
   const [books, setBooks] = useState<Book[] | null>(null);
@@ -20,6 +21,7 @@ export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [openBook, setOpenBook] = useState<Book | null>(null);
   const [view, setView] = useState<View>("wall");
+  const [sortBy, setSortBy] = useState<SortOption>("default");
 
   useEffect(() => {
     fetch("/api/books")
@@ -84,16 +86,31 @@ export default function HomePage() {
     });
   }, [books, activeType, selectedGenres, searchQuery]);
 
-  const reading = filtered.filter((b) => b.status === "READING");
-  const recommended = filtered.filter((b) => b.status === "RECOMMENDED");
+  const sortedFiltered = useMemo(() => {
+    if (sortBy === "default") return filtered;
+    return [...filtered].sort((a, b) => {
+      const yearA = a.publishedYear ?? -Infinity;
+      const yearB = b.publishedYear ?? -Infinity;
+      if (sortBy === "published-desc") return yearB - yearA;
+      if (sortBy === "published-asc") return yearA - yearB;
+      return 0;
+    });
+  }, [filtered, sortBy]);
 
-  const readForWall = filtered
-    .filter((b) => b.status === "READ")
-    .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
+  const reading = sortedFiltered.filter((b) => b.status === "READING");
+  const recommended = sortedFiltered.filter((b) => b.status === "RECOMMENDED");
 
-  const readForShelves = filtered
+  const readForWall = sortedFiltered
     .filter((b) => b.status === "READ")
     .sort((a, b) => {
+      if (sortBy !== "default") return 0; // keep publication sort if active
+      return (b.rating ?? 0) - (a.rating ?? 0);
+    });
+
+  const readForShelves = sortedFiltered
+    .filter((b) => b.status === "READ")
+    .sort((a, b) => {
+      if (sortBy !== "default") return 0; // keep publication sort if active
       const dateA = new Date(a.createdAt || 0).getTime();
       const dateB = new Date(b.createdAt || 0).getTime();
       return dateB - dateA;
@@ -165,11 +182,25 @@ export default function HomePage() {
       <div className="mb-8 space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <TypeTabs types={typesPresent} active={activeType} onChange={changeType} />
-          <div className="flex shrink-0 gap-1 rounded-full border border-white/10 bg-surface p-1">
-            <ViewButton label="Wall" isActive={view === "wall"} onClick={() => setView("wall")} />
-            <ViewButton label="Shelves" isActive={view === "shelves"} onClick={() => setView("shelves")} />
+
+          <div className="flex flex-wrap items-center gap-3">
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as SortOption)}
+              className="rounded-full border border-white/10 bg-surface px-3 py-1 font-mono text-xs text-parchment outline-none focus:border-brass"
+            >
+              <option value="default">Default Order</option>
+              <option value="published-desc">Published (Newest First)</option>
+              <option value="published-asc">Published (Oldest First)</option>
+            </select>
+
+            <div className="flex shrink-0 gap-1 rounded-full border border-white/10 bg-surface p-1">
+              <ViewButton label="Wall" isActive={view === "wall"} onClick={() => setView("wall")} />
+              <ViewButton label="Shelves" isActive={view === "shelves"} onClick={() => setView("shelves")} />
+            </div>
           </div>
         </div>
+
         {activeType && genresForType.length > 0 && (
           <GenreFilter
             genres={genresForType}
