@@ -34,15 +34,6 @@ export default function HomePage() {
       .catch(() => {});
   }, []);
 
-  async function handleLogout() {
-    try {
-      await fetch("/api/logout", { method: "POST" });
-      setLoggedIn(false);
-    } catch (error) {
-      console.error("Failed to log out", error);
-    }
-  }
-
   function changeType(type: string | null) {
     setActiveType(type);
     setSelectedGenres(new Set());
@@ -117,6 +108,16 @@ export default function HomePage() {
     });
 
   const wallOrder = [...reading, ...recommended, ...readForWall];
+
+  async function handleLogout(): Promise<void> {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } catch (error) {
+      console.error("Logout failed:", error);
+    } finally {
+      setLoggedIn(false);
+    }
+  }
 
   return (
     <main className="mx-auto min-h-screen max-w-6xl px-5 pb-24 pt-10 sm:px-8">
