@@ -9,7 +9,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -26,7 +26,7 @@ model Book {
   rating        Float?
   coverUrl      String?
   review        String?
-  publishedYear Int?     // Publication year field
+  publishedYear Int?     // <-- Added publication year field
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
