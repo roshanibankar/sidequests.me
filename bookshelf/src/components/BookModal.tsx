@@ -38,40 +38,48 @@ export default function BookModal({
       onClick={onClose}
     >
       <div
-        className="relative flex h-[300px] max-h-[65vh] w-full max-w-2xl overflow-hidden rounded-lg bg-surface shadow-2xl ring-1 ring-white/10"
+        className="relative flex max-h-[85vh] w-full max-w-2xl flex-col overflow-y-auto rounded-lg bg-surface shadow-2xl ring-1 ring-white/10 sm:h-[320px] sm:flex-row sm:overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
-          className="absolute right-3 top-3 z-10 rounded-full bg-black/40 px-2.5 py-1 font-body text-sm text-parchment hover:bg-black/60"
+          className="absolute right-3 top-3 z-10 rounded-full bg-black/60 px-2.5 py-1 font-body text-sm text-parchment hover:bg-black/80"
           aria-label="Close"
         >
           ✕
         </button>
 
-        <div
-          className="hidden h-full w-48 shrink-0 sm:block"
-          style={{
-            background: book.coverUrl
-              ? undefined
-              : `linear-gradient(160deg, ${color}, #14231C)`,
-          }}
-        >
-          {book.coverUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={book.coverUrl} alt="" className="h-full w-full object-cover" />
-          ) : (
-            <div className="flex h-full flex-col justify-between p-5">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-white/60">
-                {book.genre}
-              </span>
-              <span className="font-display text-2xl italic leading-snug text-white/95">
-                {book.title}
-              </span>
-            </div>
-          )}
+        {/* Standard Book Ratio Cover (Centered on Mobile) */}
+        <div className="flex justify-center bg-black/20 p-4 sm:p-0 sm:bg-transparent">
+          <div
+            className="aspect-[2/3] w-40 shrink-0 overflow-hidden rounded sm:h-full sm:w-48 sm:rounded-none"
+            style={{
+              background: book.coverUrl
+                ? undefined
+                : `linear-gradient(160deg, ${color}, #14231C)`,
+            }}
+          >
+            {book.coverUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={book.coverUrl}
+                alt={book.title}
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <div className="flex h-full flex-col justify-between p-4">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-white/60">
+                  {book.genre}
+                </span>
+                <span className="font-display text-xl italic leading-snug text-white/95">
+                  {book.title}
+                </span>
+              </div>
+            )}
+          </div>
         </div>
 
+        {/* Content Section */}
         <div className="flex flex-1 flex-col justify-between overflow-y-auto p-6">
           <div>
             <p className="font-mono text-[11px] uppercase tracking-widest text-brass">
