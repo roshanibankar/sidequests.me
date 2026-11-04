@@ -96,8 +96,18 @@ export default function HomePage() {
     });
   }, [filtered, sortBy]);
 
-  const reading = sortedFiltered.filter((b) => b.status === "READING");
-  const recommended = sortedFiltered.filter((b) => b.status === "RECOMMENDED");
+  // Reading and Recommended shelves: Defaulted exclusively to Date of Publication (Newest First)
+  const reading = useMemo(() => {
+    return filtered
+      .filter((b) => b.status === "READING")
+      .sort((a, b) => (b.publishedYear ?? -Infinity) - (a.publishedYear ?? -Infinity));
+  }, [filtered]);
+
+  const recommended = useMemo(() => {
+    return filtered
+      .filter((b) => b.status === "RECOMMENDED")
+      .sort((a, b) => (b.publishedYear ?? -Infinity) - (a.publishedYear ?? -Infinity));
+  }, [filtered]);
 
   const readForWall = useMemo(() => {
     if (sortBy === "recently-finished") {
@@ -116,7 +126,7 @@ export default function HomePage() {
         .sort((a, b) => (b.publishedYear ?? -Infinity) - (a.publishedYear ?? -Infinity));
     }
 
-    // Default & rating-desc: Highest Rated (filters out unrated/unread books)
+    // Default: Highest Rated
     return sortedFiltered
       .filter((b) => b.status === "READ" && b.rating !== null && b.rating !== undefined && b.rating > 0)
       .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
@@ -201,15 +211,18 @@ export default function HomePage() {
           <TypeTabs types={typesPresent} active={activeType} onChange={changeType} />
 
           <div className="flex flex-wrap items-center gap-3">
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="rounded-full border border-white/10 bg-surface px-3 py-1 font-mono text-xs text-parchment outline-none focus:border-brass"
-            >
-              <option value="rating-desc">Highest Rated</option>
-              <option value="recently-finished">Recently Finished</option>
-              <option value="published-desc">Date of Publication</option>
-            </select>
+            {/* Show sort dropdown only on Wall view */}
+            {view === "wall" && (
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as SortOption)}
+                className="rounded-full border border-white/10 bg-surface px-3 py-1 font-mono text-xs text-parchment outline-none focus:border-brass"
+              >
+                <option value="rating-desc">Highest Rated</option>
+                <option value="recently-finished">Recently Finished</option>
+                <option value="published-desc">Date of Publication (Newest First)</option>
+              </select>
+            )}
 
             <div className="flex shrink-0 gap-1 rounded-full border border-white/10 bg-surface p-1">
               <ViewButton label="Wall" isActive={view === "wall"} onClick={() => setView("wall")} />
