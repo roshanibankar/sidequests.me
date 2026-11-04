@@ -214,14 +214,14 @@ export default function HomePage() {
             {/* Show sort dropdown only on Wall view */}
             {view === "wall" && (
               <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as SortOption)}
-                className="rounded-full border border-white/10 bg-surface px-3 py-1 font-mono text-xs text-parchment outline-none focus:border-brass"
-              >
-                <option value="rating-desc">Highest Rated</option>
-                <option value="recently-finished">Recently Finished</option>
-                <option value="published-desc">Date of Publication (Newest First)</option>
-              </select>
+  value={sortBy}
+  onChange={(e) => setSortBy(e.target.value as SortOption)}
+  className="w-[140px] truncate rounded-full border border-white/10 bg-surface px-3 py-1 font-mono text-xs text-parchment outline-none focus:border-brass cursor-pointer"
+>
+  <option value="rating-desc">Highest Rated</option>
+  <option value="recently-finished">Recently Finished</option>
+  <option value="published-desc">Date of Publication (Newest First)</option>
+</select>
             )}
 
             <div className="flex shrink-0 gap-1 rounded-full border border-white/10 bg-surface p-1">

@@ -1,6 +1,7 @@
 export type Status = "READING" | "RECOMMENDED" | "READ";
 
 export type Book = {
+  publishedDate: string | number | Date;
   dateFinished: string | number | Date;
   id: string;
   title: string;
