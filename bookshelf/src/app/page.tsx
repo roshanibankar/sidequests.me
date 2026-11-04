@@ -11,7 +11,10 @@ import MosaicWall from "@/components/MosaicWall";
 import BookModal from "@/components/BookModal";
 
 type View = "wall" | "shelves";
-type SortOption = "default" | "published-desc" | "published-asc";
+type SortOption = 
+  | "rating-desc" 
+  | "recently-finished"
+  | "published-desc";
 
 export default function HomePage() {
   const [books, setBooks] = useState<Book[] | null>(null);
@@ -21,7 +24,7 @@ export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [openBook, setOpenBook] = useState<Book | null>(null);
   const [view, setView] = useState<View>("wall");
-  const [sortBy, setSortBy] = useState<SortOption>("default");
+  const [sortBy, setSortBy] = useState<SortOption>("rating-desc");
 
   useEffect(() => {
     fetch("/api/books")
@@ -78,12 +81,17 @@ export default function HomePage() {
   }, [books, activeType, selectedGenres, searchQuery]);
 
   const sortedFiltered = useMemo(() => {
-    if (sortBy === "default") return filtered;
     return [...filtered].sort((a, b) => {
-      const yearA = a.publishedYear ?? -Infinity;
-      const yearB = b.publishedYear ?? -Infinity;
-      if (sortBy === "published-desc") return yearB - yearA;
-      if (sortBy === "published-asc") return yearA - yearB;
+      if (sortBy === "recently-finished") {
+        const dateA = a.dateFinished ? new Date(a.dateFinished).getTime() : 0;
+        const dateB = b.dateFinished ? new Date(b.dateFinished).getTime() : 0;
+        return dateB - dateA;
+      }
+      if (sortBy === "published-desc") {
+        const yearA = a.publishedYear ?? -Infinity;
+        const yearB = b.publishedYear ?? -Infinity;
+        return yearB - yearA;
+      }
       return 0;
     });
   }, [filtered, sortBy]);
@@ -91,23 +99,32 @@ export default function HomePage() {
   const reading = sortedFiltered.filter((b) => b.status === "READING");
   const recommended = sortedFiltered.filter((b) => b.status === "RECOMMENDED");
 
-  const readForWall = sortedFiltered
-    .filter((b) => b.status === "READ")
-    .sort((a, b) => {
-      if (sortBy !== "default") return 0; // keep publication sort if active
-      return (b.rating ?? 0) - (a.rating ?? 0);
-    });
+  const readForWall = useMemo(() => {
+    if (sortBy === "recently-finished") {
+      return sortedFiltered
+        .filter((b) => b.status === "READ")
+        .sort((a, b) => {
+          const dateA = a.dateFinished ? new Date(a.dateFinished).getTime() : 0;
+          const dateB = b.dateFinished ? new Date(b.dateFinished).getTime() : 0;
+          return dateB - dateA;
+        });
+    }
 
-  const readForShelves = sortedFiltered
-    .filter((b) => b.status === "READ")
-    .sort((a, b) => {
-      if (sortBy !== "default") return 0; // keep publication sort if active
-      const dateA = new Date(a.createdAt || 0).getTime();
-      const dateB = new Date(b.createdAt || 0).getTime();
-      return dateB - dateA;
-    });
+    if (sortBy === "published-desc") {
+      return sortedFiltered
+        .filter((b) => b.status === "READ")
+        .sort((a, b) => (b.publishedYear ?? -Infinity) - (a.publishedYear ?? -Infinity));
+    }
 
-  const wallOrder = [...reading, ...recommended, ...readForWall];
+    // Default & rating-desc: Highest Rated (filters out unrated/unread books)
+    return sortedFiltered
+      .filter((b) => b.status === "READ" && b.rating !== null && b.rating !== undefined && b.rating > 0)
+      .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
+  }, [sortedFiltered, sortBy]);
+
+  const wallOrder = useMemo(() => {
+    return readForWall;
+  }, [readForWall]);
 
   async function handleLogout(): Promise<void> {
     try {
@@ -122,7 +139,6 @@ export default function HomePage() {
   return (
     <main className="mx-auto min-h-screen max-w-6xl px-5 pb-24 pt-10 sm:px-8">
       <header className="mb-10 flex flex-wrap items-start justify-between gap-4">
-        {/* Logo side-by-side with text */}
         <div className="flex items-center gap-4 sm:gap-6">
           <Image
             src="/logo.svg"
@@ -190,14 +206,14 @@ export default function HomePage() {
               onChange={(e) => setSortBy(e.target.value as SortOption)}
               className="rounded-full border border-white/10 bg-surface px-3 py-1 font-mono text-xs text-parchment outline-none focus:border-brass"
             >
-              <option value="default">Default Order</option>
-              <option value="published-desc">Published (Newest First)</option>
-              <option value="published-asc">Published (Oldest First)</option>
+              <option value="rating-desc">Highest Rated</option>
+              <option value="recently-finished">Recently Finished</option>
+              <option value="published-desc">Date of Publication</option>
             </select>
 
             <div className="flex shrink-0 gap-1 rounded-full border border-white/10 bg-surface p-1">
               <ViewButton label="Wall" isActive={view === "wall"} onClick={() => setView("wall")} />
-              <ViewButton label="Shelves" isActive={view === "shelves"} onClick={() => setView("shelves")} />
+              <ViewButton label="Reading/Recommended" isActive={view === "shelves"} onClick={() => setView("shelves")} />
             </div>
           </div>
         </div>
@@ -236,12 +252,6 @@ export default function HomePage() {
             label="Recommended"
             count={recommended.length}
             books={recommended}
-            onSelect={setOpenBook}
-          />
-          <Shelf
-            label="Recently finished"
-            count={readForShelves.length}
-            books={readForShelves}
             onSelect={setOpenBook}
           />
         </>
