@@ -26,7 +26,7 @@ export default function HorizontalStackShelf({
     stacks.push(readBooks.slice(i, i + stackSize));
   }
 
-  // Break stacks into rows of 4 stacks per shelf plank (matches lg:grid-cols-4)
+  // Break stacks into rows of 4 stacks per shelf plank on desktop (lg:grid-cols-4)
   const stacksPerRow = 4;
   const rowsOfStacks: Book[][][] = [];
   for (let i = 0; i < stacks.length; i += stacksPerRow) {
@@ -43,8 +43,8 @@ export default function HorizontalStackShelf({
       <div className="space-y-10 pt-4">
         {rowsOfStacks.map((rowStacks, rowIdx) => (
           <div key={rowIdx} className="relative">
-            {/* Grid of stacks for this row */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 px-2 pb-1">
+            {/* Grid set to 2 columns on mobile/tablet, expanding to 4 columns on desktop */}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-8 px-2 pb-1">
               {rowStacks.map((stack, stackIdx) => (
                 <div key={stackIdx} className="flex flex-col-reverse items-center justify-start w-full">
                   {stack.map((book, bookIdx) => {
@@ -55,7 +55,7 @@ export default function HorizontalStackShelf({
                       <div
                         key={book.id}
                         onClick={() => onSelect(book)}
-                        className="group relative cursor-pointer transition-transform duration-150 ease-out hover:-translate-y-1 w-full h-9 mb-[-1px] flex items-center justify-between px-4 select-none rounded-[1px] shadow-spine ring-1 ring-black/40 overflow-hidden"
+                        className="group relative cursor-pointer transition-transform duration-150 ease-out hover:-translate-y-1 w-full h-9 mb-[-1px] flex items-center justify-between px-3 sm:px-4 select-none rounded-[1px] shadow-spine ring-1 ring-black/40 overflow-hidden"
                         style={{
                           zIndex: stack.length - bookIdx,
                           background: `linear-gradient(0deg, rgba(0,0,0,0.25), transparent 15%, transparent 85%, rgba(255,255,255,0.08)), linear-gradient(90deg, ${color}, ${color})`,
@@ -70,7 +70,7 @@ export default function HorizontalStackShelf({
                         )}
 
                         {/* Book Title and Author */}
-                        <span className="font-display text-[11px] leading-none tracking-wide text-white/95 truncate w-full text-center pl-4">
+                        <span className="font-display text-[10px] sm:text-[11px] leading-none tracking-wide text-white/95 truncate w-full text-center pl-3 sm:pl-4">
                           {book.title}
                           {book.author ? (
                             <span className="text-white/60"> · {book.author}</span>
