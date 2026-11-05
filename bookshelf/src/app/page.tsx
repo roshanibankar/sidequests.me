@@ -9,8 +9,9 @@ import GenreFilter from "@/components/GenreFilter";
 import Shelf from "@/components/Shelf";
 import MosaicWall from "@/components/MosaicWall";
 import BookModal from "@/components/BookModal";
+import HorizontalStackShelf from "@/components/HorizontalStackShelf";
 
-type View = "wall" | "shelves";
+type View = "wall" | "shelves" | "reading";
 type SortOption = 
   | "rating-desc" 
   | "recently-finished"
@@ -92,11 +93,14 @@ export default function HomePage() {
         const yearB = b.publishedYear ?? -Infinity;
         return yearB - yearA;
       }
-      return 0;
+      // Default: Highest Rated
+      const ratingA = a.rating ?? -Infinity;
+      const ratingB = b.rating ?? -Infinity;
+      return ratingB - ratingA;
     });
   }, [filtered, sortBy]);
 
-  // Reading and Recommended shelves: Defaulted exclusively to Date of Publication (Newest First)
+  // Reading and Recommended shelves
   const reading = useMemo(() => {
     return filtered
       .filter((b) => b.status === "READING")
@@ -160,15 +164,20 @@ export default function HomePage() {
           />
 
           <div>
-            <h1 className="font-display text-4xl italic text-parchment sm:text-5xl">
-              My Bookshelf
-            </h1>
-            <p className="mt-2 max-w-md font-body text-sm text-ash">
-              Digital bookshelf until I build my own physical one. Cause the
-              stories we love best, live in us forever! Browse by type, then
-              narrow by genre. View on Desktop for better experience.
-            </p>
-          </div>
+  <h1 className="font-display text-4xl italic text-parchment sm:text-5xl">
+    My Bookshelf
+  </h1>
+  <p className="mt-2 max-w-md font-body text-sm text-ash">
+    Digital bookshelf until I build my own physical one. Cause the stories we love best, live in us forever!
+  </p>
+  <ul className="mt-3 max-w-md list-disc space-y-1 pl-4 font-body text-sm text-ash">
+    <li><strong className="text-parchment">Wall:</strong> Vertically stacked books</li>
+    <li><strong className="text-parchment">Shelves:</strong> Horizontal stacks</li>
+    <li><strong className="text-parchment">Reading:</strong> Books to be read</li>
+    <li>Sort by ratings/published year/finish date, then narrow by genre</li>
+    <li>View on Desktop for a better experience</li>
+  </ul>
+</div>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
@@ -211,22 +220,23 @@ export default function HomePage() {
           <TypeTabs types={typesPresent} active={activeType} onChange={changeType} />
 
           <div className="flex flex-wrap items-center gap-3">
-            {/* Show sort dropdown only on Wall view */}
-            {view === "wall" && (
+            {/* Show sort dropdown on Wall and Shelves views */}
+            {(view === "wall" || view === "shelves") && (
               <select
-  value={sortBy}
-  onChange={(e) => setSortBy(e.target.value as SortOption)}
-  className="w-[140px] truncate rounded-full border border-white/10 bg-surface px-3 py-1 font-mono text-xs text-parchment outline-none focus:border-brass cursor-pointer"
->
-  <option value="rating-desc">Highest Rated</option>
-  <option value="recently-finished">Recently Finished</option>
-  <option value="published-desc">Date of Publication (Newest First)</option>
-</select>
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as SortOption)}
+                className="w-[140px] truncate rounded-full border border-white/10 bg-surface px-3 py-1 font-mono text-xs text-parchment outline-none focus:border-brass cursor-pointer"
+              >
+                <option value="rating-desc">Highest Rated</option>
+                <option value="recently-finished">Recently Finished</option>
+                <option value="published-desc">Date of Publication (Newest First)</option>
+              </select>
             )}
 
             <div className="flex shrink-0 gap-1 rounded-full border border-white/10 bg-surface p-1">
               <ViewButton label="Wall" isActive={view === "wall"} onClick={() => setView("wall")} />
-              <ViewButton label="Reading/Recommended" isActive={view === "shelves"} onClick={() => setView("shelves")} />
+              <ViewButton label="Shelves" isActive={view === "shelves"} onClick={() => setView("shelves")} />
+              <ViewButton label="Reading" isActive={view === "reading"} onClick={() => setView("reading")} />
             </div>
           </div>
         </div>
@@ -253,6 +263,15 @@ export default function HomePage() {
 
       {view === "wall" ? (
         <MosaicWall books={wallOrder} onSelect={setOpenBook} />
+      ) : view === "shelves" ? (
+        <div className="space-y-6">
+          <HorizontalStackShelf
+            label="Stacked Bookshelf"
+            count={sortedFiltered.length}
+            books={sortedFiltered}
+            onSelect={setOpenBook}
+          />
+        </div>
       ) : (
         <>
           <Shelf
