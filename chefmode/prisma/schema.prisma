@@ -15,6 +15,7 @@ model Recipe {
   prepTime    String
   servings    String
   notes       String?
+  imageUrl    String?
   ingredients String[]
   steps       String[]
   createdAt   DateTime @default(now())

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 interface Recipe {
   id: string;
@@ -9,6 +10,7 @@ interface Recipe {
   prepTime: string;
   servings: string;
   notes?: string;
+  imageUrl?: string | null;
   ingredients: string[];
   steps: string[];
   createdAt: string;
@@ -56,6 +58,7 @@ const CATEGORIES: Record<
 };
 
 export default function ChefModePage() {
+  const { data: session } = useSession();
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState("");
@@ -65,6 +68,7 @@ export default function ChefModePage() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingRecipeId, setEditingRecipeId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   // Form input states
   const [formTitle, setFormTitle] = useState("");
@@ -72,6 +76,7 @@ export default function ChefModePage() {
   const [formPrepTime, setFormPrepTime] = useState("");
   const [formServings, setFormServings] = useState("");
   const [formNotes, setFormNotes] = useState("");
+  const [formImageUrl, setFormImageUrl] = useState("");
   const [formIngredients, setFormIngredients] = useState("");
   const [formSteps, setFormSteps] = useState("");
 
@@ -108,6 +113,31 @@ export default function ChefModePage() {
     });
   }, [recipes, activeCategory, searchQuery]);
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setUploadingImage(true);
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (res.ok) {
+        const { url } = await res.json();
+        setFormImageUrl(url);
+      }
+    } catch (err) {
+      console.error("Image upload failed", err);
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
   const handleOpenAddModal = () => {
     setEditingRecipeId(null);
     setFormTitle("");
@@ -115,6 +145,7 @@ export default function ChefModePage() {
     setFormPrepTime("");
     setFormServings("");
     setFormNotes("");
+    setFormImageUrl("");
     setFormIngredients("");
     setFormSteps("");
     setIsAddModalOpen(true);
@@ -127,6 +158,7 @@ export default function ChefModePage() {
     setFormPrepTime(recipe.prepTime);
     setFormServings(recipe.servings);
     setFormNotes(recipe.notes || "");
+    setFormImageUrl(recipe.imageUrl || "");
     setFormIngredients(recipe.ingredients.join("\n"));
     setFormSteps(recipe.steps.join("\n"));
     setOpenRecipe(null); // Close viewer modal
@@ -152,6 +184,7 @@ export default function ChefModePage() {
         prepTime: formPrepTime || "15 mins",
         servings: formServings || "2 servings",
         notes: formNotes,
+        imageUrl: formImageUrl || null,
         ingredients,
         steps,
       }),
@@ -198,15 +231,35 @@ export default function ChefModePage() {
           </div>
         </div>
 
-        <button
-          onClick={handleOpenAddModal}
-          className="flex items-center gap-2 rounded-full bg-[#556b2f] px-6 py-3 text-sm font-medium text-white shadow-sm transition-all hover:bg-[#445625] active:scale-95 cursor-pointer"
-        >
-          <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-          </svg>
-          <span>Add Recipe</span>
-        </button>
+        {/* Auth & Add Actions */}
+        <div className="flex items-center gap-3">
+          {session ? (
+            <>
+              <button
+                onClick={handleOpenAddModal}
+                className="flex items-center gap-2 rounded-full bg-[#556b2f] px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-[#445625] active:scale-95 cursor-pointer"
+              >
+                <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                <span>Add Recipe</span>
+              </button>
+              <button
+                onClick={() => signOut()}
+                className="rounded-full border border-[#e6e2dd] bg-white px-4 py-2.5 text-xs font-medium text-[#6e7571] hover:text-[#1a1c1b] hover:bg-[#f2efe9] transition-colors cursor-pointer"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={() => signIn()}
+              className="rounded-full border border-[#e6e2dd] bg-white px-5 py-2.5 text-xs font-medium text-[#4a504c] hover:bg-[#f2efe9] transition-colors cursor-pointer shadow-xs"
+            >
+              Chef Login
+            </button>
+          )}
+        </div>
       </header>
 
       {/* Navigation / Filters Bar */}
@@ -290,7 +343,9 @@ export default function ChefModePage() {
                   key={recipe.id}
                   onClick={() => setOpenRecipe(recipe)}
                   style={{ boxShadow: "0 8px 25px rgba(0, 0, 0, 0.08)" }}
-                  className={`group relative cursor-pointer ${config.bg} border ${config.border} text-stone-900 rounded-2xl p-6 flex flex-col justify-between h-64 select-none transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:rotate-0 ${tilt}`}
+                  className={`group relative cursor-pointer ${config.bg} border ${config.border} text-stone-900 rounded-2xl p-6 flex flex-col justify-between ${
+                    recipe.imageUrl ? "h-88" : "h-64"
+                  } select-none transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:rotate-0 ${tilt}`}
                 >
                   {/* Washi Tape Pin Accent */}
                   <div 
@@ -314,12 +369,22 @@ export default function ChefModePage() {
                       </span>
                     </div>
 
+                    {recipe.imageUrl && (
+                      <div className="mb-3 overflow-hidden rounded-xl border border-stone-900/10 bg-white/50 aspect-16/9">
+                        <img
+                          src={recipe.imageUrl}
+                          alt={recipe.title}
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                      </div>
+                    )}
+
                     <h3 className="font-serif text-xl font-bold leading-snug text-stone-950 group-hover:underline line-clamp-2">
                       {recipe.title}
                     </h3>
 
                     {recipe.notes && (
-                      <p className="mt-2 font-handwritten text-lg italic leading-tight text-stone-800 line-clamp-2">
+                      <p className="mt-1.5 font-handwritten text-lg italic leading-tight text-stone-800 line-clamp-2">
                         &quot;{recipe.notes}&quot;
                       </p>
                     )}
@@ -369,6 +434,16 @@ export default function ChefModePage() {
             </div>
 
             <div className="flex-1 overflow-y-auto p-8 space-y-6">
+              {openRecipe.imageUrl && (
+                <div className="overflow-hidden rounded-2xl border border-[#e6e2dd] max-h-72">
+                  <img
+                    src={openRecipe.imageUrl}
+                    alt={openRecipe.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+
               {openRecipe.notes && (
                 <div className="rounded-2xl border-l-4 border-[#556b2f] bg-[#f4f7f4] p-4 font-handwritten text-xl leading-relaxed text-[#3b5336]">
                   <p>💡 &quot;{openRecipe.notes}&quot;</p>
@@ -409,20 +484,22 @@ export default function ChefModePage() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between border-t border-[#e6e2dd] bg-[#faf8f5] px-8 py-4 font-mono text-xs text-[#6e7571]">
-              <button
-                onClick={() => handleOpenEditModal(openRecipe)}
-                className="font-sans font-medium text-[#556b2f] hover:text-[#445625] px-3 py-1.5 rounded-xl hover:bg-[#e3ede0]/50 cursor-pointer transition-colors flex items-center gap-1.5"
-              >
-                ✏️ Edit Recipe
-              </button>
-              <button
-                onClick={() => handleDelete(openRecipe.id)}
-                className="font-sans font-medium text-rose-600 hover:text-rose-800 px-3 py-1.5 rounded-xl hover:bg-rose-50 cursor-pointer transition-colors"
-              >
-                Delete Recipe
-              </button>
-            </div>
+            {session && (
+              <div className="flex items-center justify-between border-t border-[#e6e2dd] bg-[#faf8f5] px-8 py-4 font-mono text-xs text-[#6e7571]">
+                <button
+                  onClick={() => handleOpenEditModal(openRecipe)}
+                  className="font-sans font-medium text-[#556b2f] hover:text-[#445625] px-3 py-1.5 rounded-xl hover:bg-[#e3ede0]/50 cursor-pointer transition-colors flex items-center gap-1.5"
+                >
+                  ✏️ Edit Recipe
+                </button>
+                <button
+                  onClick={() => handleDelete(openRecipe.id)}
+                  className="font-sans font-medium text-rose-600 hover:text-rose-800 px-3 py-1.5 rounded-xl hover:bg-rose-50 cursor-pointer transition-colors"
+                >
+                  Delete Recipe
+                </button>
+              </div>
+            )}
 
           </div>
         </div>
@@ -451,6 +528,39 @@ export default function ChefModePage() {
             </div>
 
             <form onSubmit={handleSaveRecipe} className="flex-1 overflow-y-auto p-6 space-y-4 text-sm">
+              {/* Photo Upload Field */}
+              <div>
+                <label className="block mb-1 font-medium text-[#4a504c]">Dish Photo (Optional)</label>
+                <div className="flex items-center gap-3">
+                  <label className="flex items-center gap-2 rounded-xl border border-dashed border-[#c4d4c1] bg-[#faf8f5] px-4 py-2.5 text-xs font-medium text-[#556b2f] hover:bg-[#f2efe9] cursor-pointer transition-colors">
+                    <span>📸 {uploadingImage ? "Uploading..." : formImageUrl ? "Change Photo" : "Upload Picture"}</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      disabled={uploadingImage}
+                      className="hidden"
+                    />
+                  </label>
+                  {formImageUrl && (
+                    <button
+                      type="button"
+                      onClick={() => setFormImageUrl("")}
+                      className="text-xs text-rose-600 hover:underline cursor-pointer"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+                {formImageUrl && (
+                  <img
+                    src={formImageUrl}
+                    alt="Preview"
+                    className="mt-2 h-32 w-full rounded-xl object-cover border border-[#e6e2dd]"
+                  />
+                )}
+              </div>
+
               <div>
                 <label className="block mb-1 font-medium text-[#4a504c]">Recipe Title *</label>
                 <input
@@ -546,7 +656,8 @@ export default function ChefModePage() {
                 </button>
                 <button
                   type="submit"
-                  className="rounded-full bg-[#556b2f] px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-[#445625] cursor-pointer transition-all"
+                  disabled={uploadingImage}
+                  className="rounded-full bg-[#556b2f] px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-[#445625] disabled:opacity-50 cursor-pointer transition-all"
                 >
                   {editingRecipeId ? "Update Recipe" : "Save Recipe"}
                 </button>

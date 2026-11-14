@@ -37,6 +37,7 @@ export async function PUT(
         prepTime,
         servings,
         notes,
+        imageUrl: body.imageUrl || null,
         ingredients,
         steps,
       },
@@ -47,3 +48,4 @@ export async function PUT(
     return NextResponse.json({ error: "Failed to update recipe" }, { status: 500 });
   }
 }
+

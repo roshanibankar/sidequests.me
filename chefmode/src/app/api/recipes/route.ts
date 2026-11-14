@@ -17,18 +17,20 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const newRecipe = await (prisma as any).recipe.create({
-      data: {
-        title: body.title,
-        category: body.category,
-        prepTime: body.prepTime,
-        servings: body.servings,
-        notes: body.notes || null,
-        ingredients: body.ingredients,
-        steps: body.steps,
-      },
-    });
-    return NextResponse.json(newRecipe, { status: 201 });
+    const recipe = await prisma.recipe.create({
+  data: {
+    title: body.title,
+    category: body.category,
+    prepTime: body.prepTime,
+    servings: body.servings,
+    notes: body.notes,
+    imageUrl: body.imageUrl || null, // <-- Add this
+    ingredients: body.ingredients,
+    steps: body.steps,
+  },
+});
+    
+    return NextResponse.json(recipe, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: "Failed to create recipe" }, { status: 500 });
   }
