@@ -342,20 +342,18 @@ export default function ChefModePage() {
                 <article
                   key={recipe.id}
                   onClick={() => setOpenRecipe(recipe)}
-                  style={{ boxShadow: "0 8px 25px rgba(0, 0, 0, 0.08)" }}
-                  className={`group relative cursor-pointer ${config.bg} border ${config.border} text-stone-900 rounded-2xl p-6 flex flex-col justify-between ${
-                    recipe.imageUrl ? "h-88" : "h-64"
-                  } select-none transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:rotate-0 ${tilt}`}
+                  style={{ boxShadow: "0 10px 30px rgba(0, 0, 0, 0.08)" }}
+                  className={`group relative cursor-pointer ${config.bg} border ${config.border} text-stone-900 rounded-2xl p-6 pb-5 flex flex-col justify-between ${
+                    recipe.imageUrl ? "min-h-[370px]" : "min-h-[270px]"
+                  } select-none transform-gpu transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:rotate-0 ${tilt}`}
                 >
                   {/* Washi Tape Pin Accent */}
                   <div 
-                    className="absolute -top-3 left-1/2 h-5 w-24 -translate-x-1/2 rounded-xs z-10 opacity-80"
+                    className="absolute -top-3 left-1/2 h-6 w-20 -translate-x-1/2 rounded-xs z-20 opacity-90 pointer-events-none"
                     style={{
-                      background: "rgba(255, 255, 255, 0.65)",
-                      backdropFilter: "blur(2px)",
-                      borderLeft: "1px dashed rgba(0,0,0,0.12)",
-                      borderRight: "1px dashed rgba(0,0,0,0.12)",
-                      boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                      background: "rgba(255, 255, 255, 0.75)",
+                      backdropFilter: "blur(1px)",
+                      boxShadow: "0 1px 4px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.4)",
                     }}
                   />
 
@@ -370,7 +368,7 @@ export default function ChefModePage() {
                     </div>
 
                     {recipe.imageUrl && (
-                      <div className="mb-3 overflow-hidden rounded-xl border border-stone-900/10 bg-white/50 aspect-16/9">
+                      <div className="mb-3 overflow-hidden rounded-xl border border-stone-900/10 bg-white/50 aspect-16/9 shadow-xs">
                         <img
                           src={recipe.imageUrl}
                           alt={recipe.title}
@@ -390,8 +388,8 @@ export default function ChefModePage() {
                     )}
                   </div>
 
-                  <div className="flex items-center justify-between border-t border-stone-900/10 pt-3 font-mono text-xs text-stone-700">
-                    <span>🍽️ {recipe.servings}</span>
+                  <div className="mt-4 pt-3.5 border-t border-stone-900/10 flex items-center justify-between font-mono text-xs text-stone-700">
+                    <span className="flex items-center gap-1.5">🍽️ {recipe.servings}</span>
                     <span className={`flex items-center gap-1 font-sans text-xs font-bold ${config.accent} group-hover:translate-x-1 transition-transform`}>
                       View note ➔
                     </span>
