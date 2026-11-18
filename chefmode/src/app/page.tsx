@@ -236,7 +236,7 @@ export default function ChefModePage() {
           />
           <div className="flex flex-col justify-center">
             <h1 className="font-serif text-3xl font-bold tracking-tight text-[#556b2f] flex items-center gap-3">
-              An ongoing menu of food I love
+              Food I love, for the people I love.
             </h1>
             <p className="text-xs font-medium text-[#6e7571] tracking-wide mt-1">Sticky notes from my kitchen</p>
           </div>
