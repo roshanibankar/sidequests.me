@@ -64,6 +64,11 @@ export default function ChefModePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [openRecipe, setOpenRecipe] = useState<Recipe | null>(null);
   
+  // Track current rotation angle (0 when unhovered, -120 or 120 when hovered)
+  const [currentRotation, setCurrentRotation] = useState<number>(0);
+  // Track which direction (-120 or 120) to tilt on the *next* hover
+  const [nextTiltDirection, setNextTiltDirection] = useState<-120 | 120>(-120);
+
   // Modals state
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingRecipeId, setEditingRecipeId] = useState<string | null>(null);
@@ -216,18 +221,24 @@ export default function ChefModePage() {
     <main className="min-h-screen bg-[#faf8f5] text-[#2c302e] font-sans selection:bg-[#556b2f] selection:text-white pb-28">
       
       {/* Header Banner */}
-      <header className="mx-auto max-w-7xl px-8 py-10 mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-[#e6e2dd]">
-        <div className="flex items-center space-x-4">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#e3ede0] text-2xl shadow-xs border border-[#d8e2d5]">
-            🌿
-          </div>
-          <div>
-            <h1 className="font-serif text-3xl font-bold tracking-tight text-[#1a1c1b] flex items-center gap-3">
-              Recipes 
-              <span className="text-stone-400 font-light">•</span> 
-              <span className="font-handwritten text-2xl font-normal text-[#556b2f]">Food is my love language.</span>
+      <header className="mx-auto max-w-7xl px-8 py-8 mb-8 flex flex-wrap items-center justify-between gap-6 border-b border-[#e6e2dd]">
+        <div className="flex items-center gap-6">
+          <img
+            src="/icon.svg"
+            alt="Rosh's Recipes Logo"
+            onMouseEnter={() => {
+              setCurrentRotation(nextTiltDirection);
+              setNextTiltDirection((prev) => (prev === -120 ? 120 : -120));
+            }}
+            onMouseLeave={() => setCurrentRotation(0)}
+            style={{ transform: `rotate(${currentRotation}deg)` }}
+            className="h-45 w-auto object-contain shrink-0 transition-transform duration-500 cursor-pointer"
+          />
+          <div className="flex flex-col justify-center">
+            <h1 className="font-serif text-3xl font-bold tracking-tight text-[#556b2f] flex items-center gap-3">
+              An ongoing menu of food I love
             </h1>
-            <p className="text-xs font-medium text-[#6e7571] tracking-wide mt-0.5">Sticky notes from my kitchen</p>
+            <p className="text-xs font-medium text-[#6e7571] tracking-wide mt-1">Sticky notes from my kitchen</p>
           </div>
         </div>
 
