@@ -4,7 +4,7 @@ import Providers from "@/components/Providers";
 
 export const metadata: Metadata = {
   title: {
-    default: "ChefMode",
+    default: "Rosh's Recipes | ChefMode",
     template: "%s | ChefMode",
   },
   description: "Your personal recipe and cooking companion.",
